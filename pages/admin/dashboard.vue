@@ -4,10 +4,9 @@ definePageMeta({
 });
 </script>
 <template>
-    <div>
-        <h1>Dashboard Page</h1>
-        <NuxtLink to="/admin/articles">articles</NuxtLink>
-        <br>
-        <NuxtLink to="/admin/create-post">Create Post</NuxtLink>
-    </div>
+     <div class="h-screen bg-slate-100">
+  <h1>Dashboard</h1>
+
+   
+  </div>
 </template>
