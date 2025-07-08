@@ -1,7 +1,5 @@
 <script setup>
 import { usePostStore } from '~/store/post-store';
-import { useUploadPostImage } from '~/store/upload-post-image-store';
-
 
 const LaravelVuePagination = await import('laravel-vue-pagination').then(m => m.default || m);
 const { TailwindPagination } = LaravelVuePagination; // Extracting the component
@@ -81,9 +79,6 @@ const router=useRouter()
 const postStore=usePostStore()
 const {postInput,edit}=storeToRefs(postStore)
 
-const uploadPostStore=useUploadPostImage()
-const {modalVal}=storeToRefs(uploadPostStore)
-
 function editPost(post){
   postInput.value=post
   edit.value=true
@@ -92,44 +87,48 @@ function editPost(post){
 </script>
 
 <template>
-  <div>
-    <h1 class="text-2xl mb-2">Post-list </h1>
-    <UploadPostImage
-      :show="modalVal"
-      @getPosts="refresh"
-    />
-    <PostListTable
-    v-if="data?.data"
-      @searchPost="searchPost"
-      :status="status"
-      @editPost="editPost"
-      :posts="data?.data?.data"
-      @deletePost="deletePost"
-      @uploadImage="uploadPostStore.showModal"
-    />
-       
- <span v-else class="shadow-md px-2 py-2 rounded-md mt-20 text-gray-900 border font-semibold text-center">No data found
-      <br>
-      Check your internet connection
-    </span>
-
-    <TailwindPagination
-    v-if="data.data"
-      class="mt-2 mb-10"
-      :data="data?.data"
-      @pagination-change-page="paginateData"
-    />
-    <br>
-    <br>
-    <br>
-
-  </div>
-</template>
-<style scoped>
-/* If you pagination doesnt looks good use this */
-button.relative.inline-flex.items-center.px-4.py-2.text-sm.font-medium.border.focus\:z-20.bg-blue-50.border-blue-500.text-blue-600.z-30 {
-  background: #4f46e5;
-  color: white;
-  /* border-radius: 5px; */
-}
-</style>
+    <div class="max-w-6xl mx-auto p-6 bg-white shadow-md rounded-lg">
+      <h1 class="text-3xl font-bold text-gray-800 mb-6">📋 Post List</h1>
+    
+      <!-- Tabela de Posts -->
+      <PostListTable
+        v-if="data?.data"
+        @searchPost="searchPost"
+        :status="status"
+        @editPost="editPost"
+        :posts="data?.data?.data"
+        @deletePost="deletePost"
+        @getPosts="refresh"
+        />
+  
+      <!-- Mensagem de nenhum dado -->
+      <div
+        v-else
+        class="flex flex-col items-center justify-center h-48 text-gray-600 border rounded-md bg-gray-50 shadow-inner"
+      >
+        <svg
+          class="w-10 h-10 mb-2 text-gray-400"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M9.75 17L15 12l-5.25-5"
+          />
+        </svg>
+        <span class="font-semibold">No data found</span>
+        <span class="text-sm text-gray-500">Check your internet connection</span>
+      </div>
+  
+      <!-- Paginação -->
+      <TailwindPagination
+        v-if="data.data"
+        class="mt-6 flex justify-center"
+        :data="data?.data"
+        @pagination-change-page="paginateData"
+      />
+    </div>
+  </template>

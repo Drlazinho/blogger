@@ -11,38 +11,55 @@ const { postInput, loading, edit } = storeToRefs(postStore)
 
 </script>
 <template>
-  <div>
-    <h1 class="text-2xl mb-2">Create-Post</h1>
-    <div class="flex flex-col mb-2 w-[600px]">
-      <div class="flex flex-col mb-3">
-        <input v-model="postInput.title" placeholder="Title..." type="text"
-          class="mb-2 border rounded-md py-1 px-2 shadow-md" />
-        <textarea v-model="postInput.post_content" name="" id="" rows="5"
-          class="mb-2 border rounded-md py-1 px-2 shadow-md"></textarea>
+ <div class="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-lg space-y-6">
+  <h1 class="text-3xl font-bold text-gray-800">📝 Create a Post</h1>
 
-        <!-- <ClientOnly fallback-tag="span" fallback="Loading comments...">
-          <rich-editor
-           :value="postInput.post_content" 
-          @input="event => postInput.post_content = event" />
-        </ClientOnly> -->
+  <div class="space-y-4">
+    <input 
+      v-model="postInput.title" 
+      type="text" 
+      placeholder="Enter a catchy title..."
+      class="w-full border border-gray-300 rounded-lg px-4 py-2 text-base shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+    />
 
-
-
-
-
-
-      </div>
-
-      <div class="flex justify-between">
-        <NuxtLink to="/admin/list-of-posts"
-          class="rounded-md text-gray-700 hover:text-white border-1 border-blue-600 px-2 py-2 hover:bg-indigo-700 text-sm font-semibold">
-          Back
-        </NuxtLink>
-        <button :disabled="loading" @click="postStore.createPost"
-          :class="edit ? ' bg-yellow-500 rounded-md text-white px-2 py-2 text-sm font-semibold ' : ' bg-indigo-700 rounded-md text-white px-2 py-2 text-sm font-semibold  '">
-          {{ loading ? "processing...." : edit ? 'Update' : 'Create' }}
-        </button>
-      </div>
-    </div>
+    <textarea 
+      v-model="postInput.post_content" 
+      rows="6" 
+      placeholder="Write your content here..."
+      class="w-full border border-gray-300 rounded-lg px-4 py-2 text-base shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500"
+    ></textarea>
   </div>
+
+  <!-- Editor opcional -->
+  <!--
+  <ClientOnly fallback-tag="span" fallback="Loading editor...">
+    <rich-editor
+      :value="postInput.post_content" 
+      @input="event => postInput.post_content = event" 
+    />
+  </ClientOnly>
+  -->
+
+  <div class="flex justify-between items-center pt-4">
+    <NuxtLink 
+      to="/admin/list-of-posts"
+      class="inline-block text-indigo-600 hover:bg-indigo-100 border border-indigo-600 rounded-md px-4 py-2 text-sm font-medium transition-all"
+    >
+      ← Back
+    </NuxtLink>
+
+    <button 
+      :disabled="loading"
+      @click="postStore.createPost"
+      :class="[
+        'px-6 py-2 rounded-md text-sm font-semibold transition-all',
+        loading ? 'bg-gray-400 cursor-not-allowed' : (edit ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-indigo-700 hover:bg-indigo-800'),
+        'text-white'
+      ]"
+    >
+      {{ loading ? "Processing..." : edit ? "Update" : "Create" }}
+    </button>
+  </div>
+</div>
+
 </template>
